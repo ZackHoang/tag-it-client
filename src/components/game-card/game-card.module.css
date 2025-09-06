@@ -1,0 +1,4 @@
+.gameCard {
+    display: flex;
+    flex-direction: column;
+}

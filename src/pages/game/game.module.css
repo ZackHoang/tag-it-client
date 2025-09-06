@@ -1,0 +1,15 @@
+.targets {
+    display: flex;
+    justify-content: space-around;
+}
+
+.mainImage {
+    max-width: 100%;
+    max-height: 80%;
+}
+
+.popUp {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+}
