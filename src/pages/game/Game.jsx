@@ -1,19 +1,23 @@
 import { useParams } from "react-router-dom";
 import styles from "./game.module.css";
 import data from "../../data";
-import { useRef, useState } from "react";
-import useMousePosition from "../../hooks/useMousePosition";
+import {  useState } from "react";
 
 export default function Game() {
   const { game } = useParams();
   const [click, setClick] = useState(false);
-  const mousePosition = useMousePosition();
-  const dialogRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({
+    x: null,
+    y: null
+  });
   const gameIndex = parseInt(game[game.length - 1]) - 1;
 
-  const handleModal = async () => {
+  const handleModal = async (e) => {
     setClick(!click);
-    console.log(dialogRef);
+    setMousePosition({
+      x: e.clientX, 
+      y: e.clientY
+    })
     console.log(mousePosition);
   };
 
@@ -32,12 +36,11 @@ export default function Game() {
       <img
         className={styles.mainImage}
         src={data[gameIndex].image}
-        onClick={handleModal}
+        onMouseDown={handleModal}
       ></img>
       {click && (
         <div
-          style={{ left: mousePosition.x, top: mousePosition.y }}
-          ref={dialogRef}
+          style={{ left: `${mousePosition.x}px`, top: `${mousePosition.y}px` }}
           className={styles.popUp}
         >
           Mouse is clicked!
