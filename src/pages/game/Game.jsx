@@ -13,11 +13,11 @@ export default function Game() {
   });
   const gameIndex = parseInt(game[game.length - 1]) - 1;
 
-  const handleModal = async (e) => {
+  const handlePopUp = async (e) => {
     const mousePosition = {
       x: e.nativeEvent.offsetX,
       y: e.nativeEvent.offsetY,
-    }
+    };
     console.log(mousePosition);
     setClick(!click);
     setMousePosition(mousePosition);
@@ -28,10 +28,10 @@ export default function Game() {
       <div className={styles.targets}>
         {data[gameIndex].targets.map((char, index) => {
           return (
-            <article key={index}>
-              <p>{char.name}</p>
+            <figure key={index}>
               <img src={char.image} />
-            </article>
+              <figcaption>{char.name}</figcaption>
+            </figure>
           );
         })}
       </div>
@@ -39,8 +39,9 @@ export default function Game() {
         <img
           className={styles.mainImage}
           src={data[gameIndex].image}
+          alt="main game image"
           ref={imageRef}
-          onMouseDown={handleModal}
+          onMouseDown={handlePopUp}
         ></img>
         {click && (
           <div

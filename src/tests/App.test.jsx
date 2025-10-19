@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen} from "@testing-library/react";
-import Game from "../pages/game/Game";
+import { screen } from "@testing-library/react";
 import renderWithRouter from "./util";
 
 describe("App component", () => {
@@ -24,10 +23,15 @@ describe("Header component", () => {
 });
 
 describe("Home page", () => {
-  it("navigates to the right game", async () => {
+  it("game renders all necessary components", async () => {
     const { user } = renderWithRouter();
     const button = screen.getAllByRole("link", {name: "Play"})[0];
     await user.click(button);
-    expect(<Game></Game>);
+    expect(screen.getAllByRole("figure").length).toBe(3);
+    expect(screen.getByAltText("main game image")).toBeInTheDocument();
   });
+
+  it("user's click coordinates should return (0, 0) on top left of main game image", () => {
+    //???
+  })
 });
