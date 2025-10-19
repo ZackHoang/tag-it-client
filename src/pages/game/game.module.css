@@ -3,6 +3,10 @@
     justify-content: space-around;
 }
 
+#imageContainer {
+    position: relative;
+}
+
 .mainImage {
     max-width: 100%;
     max-height: 80%;
