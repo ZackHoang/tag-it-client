@@ -1,16 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { screen } from "@testing-library/react";
 import renderWithRouter from "./util";
-import Game from "../pages/game/Game";
-import userEvent from "@testing-library/user-event";
-
-vi.mock("../pages/game/Game", () => ({ handlePopUp }) => {
-  <img
-    alt="main game image"
-    src="https://res.cloudinary.com/dazy1wrx0/image/upload/pixelcon_a10dsa.jpg"
-    onMouseDown={handlePopUp}
-  ></img>;
-});
 
 describe("App component", () => {
   it("renders correct header and footer", () => {
@@ -46,11 +36,10 @@ describe("Home page", () => {
   });
 
   it("call handlePopUp when clicked on image", async () => {
-    const handlePopUp = vi.fn();
-    const user = userEvent.setup();
-    render(<Game handlePopUp={handlePopUp}></Game>);
+    const { user } = renderWithRouter("/game1");
     const image = screen.getByAltText("main game image");
     await user.click(image);
-    expect(handlePopUp).toHaveBeenCalled();
+    expect(screen.getByRole("form")).toBeInTheDocument();
+    //assertion???
   });
 });
