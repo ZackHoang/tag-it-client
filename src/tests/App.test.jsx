@@ -35,11 +35,10 @@ describe("Home page", () => {
     expect(screen.getByAltText("main game image")).toBeInTheDocument();
   });
 
-  it("call handlePopUp when clicked on image", async () => {
+  it("pop up form appears when image is clicked", async () => {
     const { user } = renderWithRouter("/game1");
     const image = screen.getByAltText("main game image");
     await user.click(image);
     expect(screen.getByRole("form")).toBeInTheDocument();
-    //assertion???
   });
 });

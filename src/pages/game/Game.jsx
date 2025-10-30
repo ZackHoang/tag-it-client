@@ -52,11 +52,16 @@ export default function Game() {
             {data[gameIndex].targets.map((char, index) => {
               return (
                 <div className={styles.selection} key={index}>
-                  <input type="radio" id={char.name} value={char.name} name="choice"></input>
+                  <input
+                    type="radio"
+                    id={char.name}
+                    value={char.name}
+                    name="choice"
+                  ></input>
                   <img src={char.image}></img>
                   <label htmlFor={char.name}>{char.name}</label>
                 </div>
-              )
+              );
             })}
             <button type="submit">Confirm</button>
           </form>
