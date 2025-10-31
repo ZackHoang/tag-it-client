@@ -1,30 +1,25 @@
-// import { Link } from "react-router-dom";
-// import styles from "./home.module.css";
-import data from "../../data";
 import GameCard from "../../components/game-card/GameCard";
-// import { useEffect, useState } from "react";
+import { useAllGames } from "../../hooks/useAllGames";
+import styles from './home.module.css';
 
 export default function Home() {
-  // const [data, setData] = useState({});
-  // useEffect(() => {
-  //   const fetchGames = async () => {
-  //     const response = await fetch();
-  //   };
+  const { games, error, loading } = useAllGames();
 
-  //   fetchGames();
-  // }, []);
+  const gamesList = games.map((game, index) => {
+    return <GameCard
+      key={index}
+      image={game.image}
+      game={`game/${game.id}`}
+      source={game.source}>
+    </GameCard>
+  });
+
+  if (loading) return <h1>Loading...</h1>
+  if (error) return <h1>{error}</h1>
 
   return (
-    data &&
-    data.map((game, index) => {
-      return (
-        <GameCard
-          key={index}
-          image={game.image}
-          game={game.id}
-          source={game.source}
-        />
-      );
-    })
+    <section id={styles.container}>
+      {gamesList}
+    </section>
   );
 }

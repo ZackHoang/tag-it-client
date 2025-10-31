@@ -8,12 +8,12 @@ import Game from "./pages/game/Game";
 const routes = [
   {
     path: "/",
-    element: <App/>,
-    errorElement: <Error/>,
+    element: <App />,
+    errorElement: <Error />,
     children: [
-      {index: true, element: <Home></Home>},
-      {path: "leaderboard", element: <LeaderBoard></LeaderBoard>},
-      {path: ":game", element: <Game></Game>}
+      { index: true, element: <Home></Home> },
+      { path: "leaderboard", element: <LeaderBoard></LeaderBoard> },
+      { path: "game/:id", element: <Game></Game> }
     ]
   },
 ];
