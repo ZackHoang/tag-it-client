@@ -4,10 +4,13 @@ import { useRef, useState } from "react";
 import { useGame } from "../../hooks/useGame";
 import CharactersList from "../../components/character/CharactersList";
 import FindCharForm from "../../components/find-char-form/FindCharForm";
+import { useTime } from "../../hooks/useTime";
 
 export default function Game() {
   const { id } = useParams();
   const { game, error, loading } = useGame(id);
+  const { data } = useTime();
+  console.log(data);
   const [click, setClick] = useState(false);
   const imageRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({
@@ -43,7 +46,8 @@ export default function Game() {
         ></img>
         {click && <FindCharForm
           characters={game.characters}
-          mousePosition={mousePosition}>
+          mousePosition={mousePosition}
+          mainImageRef={imageRef}>
         </FindCharForm>}
       </div>
     </section>
