@@ -2,11 +2,12 @@ import { useParams } from "react-router-dom";
 import styles from "./game.module.css";
 import { useRef, useState } from "react";
 import { useGame } from "../../hooks/useGame";
+import CharactersList from "../../components/character/CharactersList";
+import FindCharForm from "../../components/find-char-form/FindCharForm";
 
 export default function Game() {
   const { id } = useParams();
   const { game, error, loading } = useGame(id);
-  console.log(game);
   const [click, setClick] = useState(false);
   const imageRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({
@@ -24,45 +25,14 @@ export default function Game() {
     setMousePosition(mousePosition);
   };
 
-  const charactersList = game.characters.map((char, index) => {
-    return <figure key={index}>
-      <img src={char.image} />
-      <figcaption>{char.name}</figcaption>
-    </figure>
-  });
-
-  const findCharForm = () => {
-    return <form
-      style={{ left: mousePosition.x, top: mousePosition.y }}
-      className={styles.popUp}
-      aria-label="selection"
-    >
-      {game && game.characters.map((char, index) => {
-        return (
-          <div className={styles.selection} key={index}>
-            <input
-              type="radio"
-              id={char.name}
-              value={char.name}
-              name="choice"
-            ></input>
-            <img src={char.image}></img>
-            <label htmlFor={char.name}>{char.name}</label>
-          </div>
-        );
-      })}
-      <button type="submit">Confirm</button>
-    </form>
-  }
-
   if (loading) return <h1>Loading...</h1>
   if (error) return <h1>{error}</h1>
 
   return (
     <section id={styles.game}>
-      <div className={styles.targets}>
-        {charactersList}
-      </div>
+      <CharactersList
+        characters={game.characters}>
+      </CharactersList>
       <div id={styles.imageContainer}>
         <img
           className={styles.mainImage}
@@ -71,7 +41,10 @@ export default function Game() {
           ref={imageRef}
           onMouseDown={handlePopUp}
         ></img>
-        {click && findCharForm}
+        {click && <FindCharForm
+          characters={game.characters}
+          mousePosition={mousePosition}>
+        </FindCharForm>}
       </div>
     </section>
   );

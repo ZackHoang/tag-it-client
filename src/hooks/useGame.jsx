@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 export function useGame(id) {
-    const [game, setGame] = useState({});
+    const [game, setGame] = useState({
+        characters: []
+    });
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 

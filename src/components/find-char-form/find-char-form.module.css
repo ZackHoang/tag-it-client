@@ -1,0 +1,12 @@
+.popUp {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
