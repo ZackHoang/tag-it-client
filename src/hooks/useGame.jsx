@@ -6,7 +6,9 @@ export function useGame(id) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API}/games/${id}`)
+        fetch(`${import.meta.env.VITE_API}/games/${id}`, {
+            credentials: 'include'
+        })
             .then((response) => {
                 if (response.status >= 400) {
                     throw new Error("Server Error");
