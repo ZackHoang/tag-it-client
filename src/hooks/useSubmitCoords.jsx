@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 
-export function useSubmitCoords(url, { x, y, imageWidth, imageHeight }) {
+export function useSubmitCoords() {
     const [data, setData] = useState({
-        x: x,
-        y: y,
-        imageWidth: imageWidth,
-        imageHeight: imageHeight
+        message: null
     });
-    const [error, setError] = useState("");
+    const [error, setError] = useState({
+        message: null
+    });
     const [loading, setLoading] = useState(false);
-    const [res, setRes] = useState({});
 
-    const submitCoords = ({ x, y, imageWidth, imageHeight }) => {
-        console.log(url);
-        fetch(url, {
+    const submitCoords = (event, id, currentChar, x, y, imageWidth, imageHeight) => {
+        event.preventDefault();
+        setLoading(true);
+        fetch(`${import.meta.env.VITE_API}/games/${id}/${currentChar}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -23,7 +22,8 @@ export function useSubmitCoords(url, { x, y, imageWidth, imageHeight }) {
                 y: y,
                 browser_image_width: imageWidth,
                 browser_image_height: imageHeight
-            })
+            }),
+            credentials: "include"
         })
             .then((response) => {
                 if (response.status >= 400) {
@@ -31,15 +31,10 @@ export function useSubmitCoords(url, { x, y, imageWidth, imageHeight }) {
                 }
                 return response.json()
             })
-            .then((response) => setRes(response.data))
+            .then((response) => { console.log(response); setData(response.data) })
             .catch((error) => setError(error))
             .finally(() => setLoading(false))
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        submitCoords(data);
-    }
-
-    return { onSubmit, data, setData, res, error, loading }
+    return { submitCoords, data, error, loading }
 }

@@ -1,23 +1,33 @@
 import { useParams } from "react-router-dom";
 import styles from "./game.module.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGame } from "../../hooks/useGame";
 import CharactersList from "../../components/character/CharactersList";
 import FindCharForm from "../../components/find-char-form/FindCharForm";
 // import { useTime } from "../../hooks/useTime";
 import Timer from "../../components/timer/Timer";
+import Notification from "../../components/notification/Notification";
 
 export default function Game() {
   const { id } = useParams();
   const { game, error, loading } = useGame(id);
-  // const { data } = useTime();
-  // console.log(data);
   const [click, setClick] = useState(false);
+  const [message, setMessage] = useState("");
   const imageRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({
     x: null,
     y: null,
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMessage(null)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [message])
 
   const handlePopUp = async (e) => {
     const mousePosition = {
@@ -35,6 +45,7 @@ export default function Game() {
   return (
     <section id={styles.game}>
       <Timer></Timer>
+      {message !== null && <Notification message={message}></Notification>}
       <CharactersList
         characters={game.characters}>
       </CharactersList>
@@ -49,7 +60,9 @@ export default function Game() {
         {click && <FindCharForm
           characters={game.characters}
           mousePosition={mousePosition}
-          mainImageRef={imageRef}>
+          imageRef={imageRef}
+          setMessage={setMessage}
+        >
         </FindCharForm>}
       </div>
     </section>

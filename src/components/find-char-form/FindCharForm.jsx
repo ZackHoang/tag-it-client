@@ -1,40 +1,42 @@
 import { useParams } from "react-router-dom";
 import { useSubmitCoords } from "../../hooks/useSubmitCoords";
 import styles from "./find-char-form.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function FindCharForm({ characters, mousePosition, mainImageRef }) {
+export default function FindCharForm({ characters, mousePosition, imageRef, setMessage }) {
     const { id } = useParams();
     const [currentChar, setCurrentChar] = useState("");
     const handleCharChange = (e) => {
         setCurrentChar(e.target.value);
     }
-    const imageRef = useRef(null);
-    const { onSubmit, data, setData, res, error, loading } = useSubmitCoords(
-        `${import.meta.env.VITE_API}/games/${id}/${currentChar}`,
-        {
-            x: mousePosition.x,
-            y: mousePosition.y,
-            imageWidth: mainImageRef.current.width,
-            imageHeight: mainImageRef.current.height
-        }
-    );
+    const { submitCoords, data, error, loading } = useSubmitCoords();
 
     useEffect(() => {
-        setData({
-            ...data,
-            x: mousePosition.x,
-            y: mousePosition.y,
-        });
-        console.log(res);
-    }, [res, mousePosition])
+        if (loading === true) {
+            setMessage("Loading...")
+        } else if (data.message !== null) {
+            setMessage(data.message);
+        } else {
+            setMessage(error.message);
+        }
+    }, [data])
 
     return (
         <form
             style={{ left: mousePosition.x, top: mousePosition.y }}
             className={styles.popUp}
             aria-label="selection"
-            onSubmit={onSubmit}
+            onSubmit={(event) => {
+                submitCoords(
+                    event,
+                    id,
+                    currentChar,
+                    mousePosition.x,
+                    mousePosition.y,
+                    imageRef.current.width,
+                    imageRef.current.height
+                );
+            }}
         >
             {characters.map((char, index) => {
                 return (
@@ -47,7 +49,7 @@ export default function FindCharForm({ characters, mousePosition, mainImageRef }
                             onChange={handleCharChange}
                             checked={currentChar === char.name}
                         ></input>
-                        <img src={char.image} ref={imageRef}></img>
+                        <img src={char.image}></img>
                         <label htmlFor={char.name}>{char.name}</label>
                     </div>
                 );
