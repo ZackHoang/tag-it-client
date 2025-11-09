@@ -9,8 +9,7 @@ export function useSubmitCoords() {
     });
     const [loading, setLoading] = useState(false);
 
-    const submitCoords = (event, id, currentChar, x, y, imageWidth, imageHeight) => {
-        event.preventDefault();
+    const submitCoords = (id, currentChar, x, y, imageWidth, imageHeight) => {
         setLoading(true);
         fetch(`${import.meta.env.VITE_API}/games/${id}/${currentChar}`, {
             method: "POST",

@@ -2,8 +2,9 @@ import { useParams } from "react-router-dom";
 import { useSubmitCoords } from "../../hooks/useSubmitCoords";
 import styles from "./find-char-form.module.css";
 import { useEffect, useState } from "react";
+import Marker from "../marker/Marker";
 
-export default function FindCharForm({ characters, mousePosition, imageRef, setMessage }) {
+export default function FindCharForm({ characters, mousePosition, imageRef, setMessage, markers, setMarkers }) {
     const { id } = useParams();
     const [currentChar, setCurrentChar] = useState("");
     const handleCharChange = (e) => {
@@ -15,6 +16,17 @@ export default function FindCharForm({ characters, mousePosition, imageRef, setM
         if (loading === true) {
             setMessage("Loading...")
         } else if (data.message !== null) {
+            if (data.message.includes("found")) {
+                setMarkers(
+                    [
+                        ...markers,
+                        {
+                            x: mousePosition.x,
+                            y: mousePosition.y
+                        }
+                    ]
+                )
+            }
             setMessage(data.message);
         } else {
             setMessage(error.message);
@@ -27,8 +39,8 @@ export default function FindCharForm({ characters, mousePosition, imageRef, setM
             className={styles.popUp}
             aria-label="selection"
             onSubmit={(event) => {
+                event.preventDefault();
                 submitCoords(
-                    event,
                     id,
                     currentChar,
                     mousePosition.x,

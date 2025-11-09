@@ -7,6 +7,7 @@ import FindCharForm from "../../components/find-char-form/FindCharForm";
 // import { useTime } from "../../hooks/useTime";
 import Timer from "../../components/timer/Timer";
 import Notification from "../../components/notification/Notification";
+import Marker from "../../components/marker/Marker";
 
 export default function Game() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ export default function Game() {
     x: null,
     y: null,
   });
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,8 +55,8 @@ export default function Game() {
         <img
           className={styles.mainImage}
           src={game.image}
-          alt="main game image"
           ref={imageRef}
+          alt="main game image"
           onMouseDown={handlePopUp}
         ></img>
         {click && <FindCharForm
@@ -62,8 +64,13 @@ export default function Game() {
           mousePosition={mousePosition}
           imageRef={imageRef}
           setMessage={setMessage}
+          markers={markers}
+          setMarkers={setMarkers}
         >
         </FindCharForm>}
+        {markers.length > 0 && markers.map((marker) => {
+          return <Marker x={marker.x} y={marker.y}></Marker>
+        })}
       </div>
     </section>
   );
