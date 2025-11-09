@@ -68,8 +68,8 @@ export default function Game() {
           setMarkers={setMarkers}
         >
         </FindCharForm>}
-        {markers.length > 0 && markers.map((marker) => {
-          return <Marker x={marker.x} y={marker.y}></Marker>
+        {markers.length > 0 && markers.map((marker, index) => {
+          return <Marker x={marker.x} y={marker.y} key={index}></Marker>
         })}
       </div>
     </section>
