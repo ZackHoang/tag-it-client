@@ -4,7 +4,7 @@ import styles from "./find-char-form.module.css";
 import { useEffect, useState } from "react";
 import Marker from "../marker/Marker";
 
-export default function FindCharForm({ characters, mousePosition, imageRef, setMessage, markers, setMarkers }) {
+export default function FindCharForm({ characters, mousePosition, imageRef, setMessage, markers, setMarkers, setIsEveryoneFound, setIsFound }) {
     const { id } = useParams();
     const [currentChar, setCurrentChar] = useState("");
     const handleCharChange = (e) => {
@@ -16,7 +16,9 @@ export default function FindCharForm({ characters, mousePosition, imageRef, setM
         if (loading === true) {
             setMessage("Loading...")
         } else if (data.message !== null) {
-            if (data.message.includes("found")) {
+            if (data.message === "You have found everyone") {
+                setIsEveryoneFound(true);
+            } else if (data.message.includes("You found")) {
                 setMarkers(
                     [
                         ...markers,
@@ -25,7 +27,10 @@ export default function FindCharForm({ characters, mousePosition, imageRef, setM
                             y: mousePosition.y
                         }
                     ]
-                )
+                );
+                setIsFound(true);
+            } else if (data.message === "Try Again!") {
+                setIsFound(false);
             }
             setMessage(data.message);
         } else {

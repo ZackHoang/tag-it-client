@@ -8,6 +8,8 @@ import FindCharForm from "../../components/find-char-form/FindCharForm";
 import Timer from "../../components/timer/Timer";
 import Notification from "../../components/notification/Notification";
 import Marker from "../../components/marker/Marker";
+import useTotalTime from "../../hooks/useTotalTime";
+import ScoreForm from "../../components/score-form/ScoreForm";
 
 export default function Game() {
   const { id } = useParams();
@@ -20,6 +22,8 @@ export default function Game() {
     y: null,
   });
   const [markers, setMarkers] = useState([]);
+  const [isFoundEveryone, setIsFoundEveryone] = useState(false);
+  const [isFound, setIsFound] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,32 +50,39 @@ export default function Game() {
 
   return (
     <section id={styles.game}>
-      <Timer></Timer>
-      {message !== null && <Notification message={message}></Notification>}
-      <CharactersList
-        characters={game.characters}>
-      </CharactersList>
-      <div id={styles.imageContainer}>
-        <img
-          className={styles.mainImage}
-          src={game.image}
-          ref={imageRef}
-          alt="main game image"
-          onMouseDown={handlePopUp}
-        ></img>
-        {click && <FindCharForm
-          characters={game.characters}
-          mousePosition={mousePosition}
-          imageRef={imageRef}
-          setMessage={setMessage}
-          markers={markers}
-          setMarkers={setMarkers}
-        >
-        </FindCharForm>}
-        {markers.length > 0 && markers.map((marker, index) => {
-          return <Marker x={marker.x} y={marker.y} key={index}></Marker>
-        })}
-      </div>
+      {!isFoundEveryone ?
+        <>
+          <Timer></Timer>
+          <CharactersList
+            characters={game.characters}>
+          </CharactersList>
+          {message !== null && <Notification message={message} isFound={isFound}></Notification>}
+          <div id={styles.imageContainer}>
+            <img
+              className={styles.mainImage}
+              src={game.image}
+              ref={imageRef}
+              alt="main game image"
+              onMouseDown={handlePopUp}
+            ></img>
+            {click && <FindCharForm
+              characters={game.characters}
+              mousePosition={mousePosition}
+              imageRef={imageRef}
+              setMessage={setMessage}
+              markers={markers}
+              setMarkers={setMarkers}
+              setIsEveryoneFound={setIsFoundEveryone}
+              setIsFound={setIsFound}
+            >
+            </FindCharForm>}
+            {markers.length > 0 && markers.map((marker, index) => {
+              return <Marker x={marker.x} y={marker.y} key={index}></Marker>
+            })}
+          </div>
+        </> : <>
+          <ScoreForm></ScoreForm>
+        </>}
     </section>
   );
 }

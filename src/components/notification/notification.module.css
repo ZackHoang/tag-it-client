@@ -1,3 +1,16 @@
-/* .notification {
-    position: absolute;
-} */
+.notification {
+    position: sticky;
+    left: 50%;
+    top: 50%;
+    z-index: 3;
+    display: flex;
+    justify-self: center;
+}
+
+.correct {
+    background-color: green;
+}
+
+.incorrect {
+    background-color: red;
+}
